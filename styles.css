@@ -222,9 +222,7 @@ margin-top: -20px;
 
 .try-button {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 84px;
+	margin-bottom: -180px;
     border: none;
     cursor: pointer;
     font-size: 16px;
