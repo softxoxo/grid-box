@@ -1,5 +1,8 @@
 @font-face {font-family: ST-SimpleSquare; src: url('./fonts/ST-SimpleSquare.otf');} 
-
+:root {
+    --index: 1vw;
+    --transition: cubic-bezier(.4, 0, .2, 1);
+}
 * {
     padding: 0px;
     margin: 0px;
@@ -127,16 +130,6 @@ filter: drop-shadow(-2px 4px 8.2px #000000) drop-shadow(-11px 10px 15px rgba(0, 
 
 }
 
-.format-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 10px;
-    padding: 20px;
-    width: calc(100% - 40px);
-    max-width: 1200px;
-	margin-top: 64px;
-}
-
 @keyframes fadeIn {
     0% { opacity: 0; }
     20% { opacity: 0.8; }
@@ -154,6 +147,16 @@ filter: drop-shadow(-2px 4px 8.2px #000000) drop-shadow(-11px 10px 15px rgba(0, 
     100% { opacity: 0; }
 }
 
+.format-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+    padding: 20px;
+    width: calc(100% - 40px);
+    max-width: 1200px;
+    margin-top: 64px;
+}
+
 .format-item {
     display: flex;
     flex-direction: row;
@@ -165,9 +168,10 @@ filter: drop-shadow(-2px 4px 8.2px #000000) drop-shadow(-11px 10px 15px rgba(0, 
     background: linear-gradient(90deg, rgba(29, 29, 29, 0.36) 0%, rgba(75, 75, 75, 0.36) 50%, rgba(29, 29, 29, 0.36) 100%);
     position: relative;
     overflow: visible;
-    transition: transform 0.3s ease-out;
+    transition: all 0.3s ease-out;
     border-radius: 5px;
 }
+
 
 .format-item::after {
     content: '';
