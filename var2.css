@@ -155,23 +155,21 @@ filter: drop-shadow(-2px 4px 8.2px #000000) drop-shadow(-11px 10px 15px rgba(0, 
     width: calc(100% - 40px);
     max-width: 1200px;
     margin-top: 64px;
+    perspective: 1000px;
 }
 
 .format-item {
     display: flex;
-    flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 10px;
     width: 180px;
     height: 54px;
     background: linear-gradient(90deg, rgba(29, 29, 29, 0.36) 0%, rgba(75, 75, 75, 0.36) 50%, rgba(29, 29, 29, 0.36) 100%);
     position: relative;
-    overflow: visible;
-    transition: all 0.3s ease-out;
     border-radius: 5px;
+    transition: all 0.3s ease-out;
+    transform-style: preserve-3d;
 }
-
 
 .format-item::after {
     content: '';
@@ -189,6 +187,7 @@ filter: drop-shadow(-2px 4px 8.2px #000000) drop-shadow(-11px 10px 15px rgba(0, 
 
 .format-item:hover::after {
     animation: fadeIn 0.3s ease-out forwards, hoverFadeOut 2s 2s forwards;
+    opacity: 1;
 }
 
 .format-item:hover {
