@@ -112,15 +112,19 @@ body {
 .title {
 	margin-top: 64px;
     width: 685px;
-    height: 25px;
+
     font-style: normal;
     font-weight: 400;
     font-size: 36px;
     line-height: 110%;
     text-align: center;
-    color: #FFFFFF;
-    leading-trim: both;
-    text-edge: cap;
+background: linear-gradient(102.39deg, #727272 2.18%, #B1B1B1 20.2%, #E8E8E8 49.6%, #A4A4A4 74.26%, #424242 97.02%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+text-fill-color: transparent;
+filter: drop-shadow(-2px 4px 8.2px #000000) drop-shadow(-11px 10px 15px rgba(0, 0, 0, 0.9)) contrast(1.55);
+
 }
 
 .format-grid {
@@ -134,15 +138,33 @@ body {
 }
 
 @keyframes fadeIn {
-    0% { opacity: 0; }
-    20% { opacity: 0.8; }
-    100% { opacity: 1; }
+    0% { 
+        opacity: 0;
+
+    }
+    20% { 
+        opacity: 0.8;
+
+    }
+    100% { 
+        opacity: 1;
+
+    }
 }
 
 @keyframes fadeOut {
-    0% { opacity: 1; }
-    80% { opacity: 0.2; }
-    100% { opacity: 0; }
+    0% { 
+        opacity: 1;
+
+    }
+    80% { 
+        opacity: 0.2;
+
+    }
+    100% { 
+        opacity: 0;
+
+    }
 }
 
 .format-item {
@@ -156,6 +178,7 @@ body {
     background: linear-gradient(90deg, rgba(29, 29, 29, 0.36) 0%, rgba(75, 75, 75, 0.36) 50%, rgba(29, 29, 29, 0.36) 100%);
     position: relative;
     overflow: visible;
+    transition: transform 0.3s ease-out;
 }
 
 .format-item::after {
@@ -174,10 +197,17 @@ body {
     animation: fadeIn 0.3s ease-out forwards;
 }
 
+.format-item:hover {
+    transform: scale(1.05);
+}
+
 .format-item:not(:hover)::after {
     animation: fadeOut 1s ease-out forwards;
 }
 
+.format-item:not(:hover) {
+    transform: scale(1);
+}
 .format-text {
     font-style: normal;
     font-weight: 400;
@@ -210,13 +240,13 @@ body {
 
 .description {
     max-width: 1050px;
-    text-align: left;
+    text-align: center;
 font-family: 'Mulish';
 font-style: normal;
 font-weight: 400;
 font-size: 20px;
 line-height: 110%;
-color: #FFFFFF;
+color: #CCCCCC;
 margin-top: -20px;
 }
 
