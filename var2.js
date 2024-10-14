@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function animateItems() {
         items.forEach((item, index) => {
-            item.style.opacity = '0';
             item.style.transform = 'translateY(40px)';
             item.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
             

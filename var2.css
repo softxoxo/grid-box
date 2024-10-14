@@ -169,6 +169,7 @@ filter: drop-shadow(-2px 4px 8.2px #000000) drop-shadow(-11px 10px 15px rgba(0, 
     border-radius: 4px; 
     transition: all 0.3s ease-out; 
     transform-style: preserve-3d;
+    opacity: 0;
 }
 
 .format-item::after {
