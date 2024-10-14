@@ -164,10 +164,10 @@ filter: drop-shadow(-2px 4px 8.2px #000000) drop-shadow(-11px 10px 15px rgba(0, 
     align-items: center;
     width: 180px;
     height: 54px;
-    background: linear-gradient(90deg, rgba(29, 29, 29, 0.36) 0%, rgba(75, 75, 75, 0.36) 50%, rgba(29, 29, 29, 0.36) 100%);
-    position: relative;
-    border-radius: 5px;
-    transition: all 0.3s ease-out;
+    background: linear-gradient(90deg, rgba(29, 29, 29, 0.36) 100%, rgba(75, 75, 75, 0.36) 50%, rgba(29, 29, 29, 0.36) 100%); 
+    position: relative; 
+    border-radius: 4px; 
+    transition: all 0.3s ease-out; 
     transform-style: preserve-3d;
 }
 

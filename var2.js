@@ -1,8 +1,22 @@
-// CSS remains the same as before
-
 document.addEventListener('DOMContentLoaded', () => {
     const grid = document.querySelector('.format-grid');
     const items = grid.querySelectorAll('.format-item');
+
+    function animateItems() {
+        items.forEach((item, index) => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(40px)';
+            item.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+            
+            setTimeout(() => {
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+            }, index * 50 + 500); // 500ms initial delay, then 50ms between each item
+        });
+    }
+
+    // Start the animation
+    animateItems();
 
     function getNeighbors(index, columns) {
         const neighbors = [];
@@ -52,10 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 scale = 0.8 + (0.5 / distance);
                 translateY = -10 / distance;
-                // Calculate lateral movement to prevent overlap
-                const lateralMove = (scale - 1) * 10; // 90 is half the width of an item
+                const lateralMove = (scale - 1) * 10;
                 translateX = lateralMove * colDiff;
-                translateY += lateralMove * rowDiff; // Adjust Y translation as well
+                translateY += lateralMove * rowDiff;
                 rotateX = -15 * rowDiff;
                 rotateY = 15 * colDiff;
             }

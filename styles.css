@@ -137,6 +137,17 @@ filter: drop-shadow(-2px 4px 8.2px #000000) drop-shadow(-11px 10px 15px rgba(0, 
 	margin-top: 64px;
 }
 
+@keyframes fadeInMoveUp {
+    0% { 
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    100% { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @keyframes fadeIn {
     0% { opacity: 0; }
     20% { opacity: 0.8; }
@@ -156,30 +167,34 @@ filter: drop-shadow(-2px 4px 8.2px #000000) drop-shadow(-11px 10px 15px rgba(0, 
 
 .format-item {
     display: flex;
-    flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 10px;
     width: 180px;
     height: 54px;
-    background: linear-gradient(90deg, rgba(29, 29, 29, 0.36) 0%, rgba(75, 75, 75, 0.36) 50%, rgba(29, 29, 29, 0.36) 100%);
-    position: relative;
-    overflow: visible;
-    transition: transform 0.3s ease-out;
-    border-radius: 5px;
+    background: linear-gradient(90deg, rgba(29, 29, 29, 0.36) 100%, rgba(75, 75, 75, 0.36) 50%, rgba(29, 29, 29, 0.36) 100%); 
+    position: relative; 
+    border-radius: 4px; 
+    transition: all 0.3s ease-out; 
+    transform-style: preserve-3d;
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+.format-item.animate {
+    animation: fadeInMoveUp 0.5s ease-out forwards;
 }
 
 .format-item::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    box-shadow: 0px 0px 16px #37779D;
-    opacity: 0;
-    pointer-events: none;
-    border-radius: 5px;
+    content: ''; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0; 
+    box-shadow: 0px 0px 8px #37779D; 
+    opacity: 0; 
+    pointer-events: none; 
+    border-radius: 4px; 
     transition: opacity 0.3s ease-out;
 }
 
