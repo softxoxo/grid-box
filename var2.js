@@ -16,24 +16,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Start the animation
     animateItems();
-
     function getNeighbors(index, columns) {
         const neighbors = [];
         const row = Math.floor(index / columns);
         const col = index % columns;
-
-        for (let i = -1; i <= 1; i++) {
-            for (let j = -1; j <= 1; j++) {
-                const newRow = row + i;
-                const newCol = col + j;
-                const newIndex = newRow * columns + newCol;
-
-                if (newRow >= 0 && newCol >= 0 && newCol < columns && newIndex < items.length) {
-                    neighbors.push({ item: items[newIndex], rowDiff: i, colDiff: j });
-                }
-            }
+    
+        // Add current item
+        neighbors.push({ item: items[index], rowDiff: 0, colDiff: 0 });
+    
+        // Check neighbor above
+        const topRow = row - 1;
+        if (topRow >= 0) {
+            const topIndex = topRow * columns + col;
+            neighbors.push({ item: items[topIndex], rowDiff: -1, colDiff: 0 });
         }
-
+    
+        // Check neighbor below
+        const bottomRow = row + 1;
+        const bottomIndex = bottomRow * columns + col;
+        if (bottomIndex < items.length) {
+            neighbors.push({ item: items[bottomIndex], rowDiff: 1, colDiff: 0 });
+        }
+    
         return neighbors;
     }
 
