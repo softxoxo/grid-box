@@ -137,17 +137,6 @@ filter: drop-shadow(-2px 4px 8.2px #000000) drop-shadow(-11px 10px 15px rgba(0, 
 	margin-top: 64px;
 }
 
-@keyframes fadeInMoveUp {
-    0% { 
-        opacity: 0;
-        transform: translateY(40px);
-    }
-    100% { 
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 @keyframes fadeIn {
     0% { opacity: 0; }
     20% { opacity: 0.8; }
@@ -176,12 +165,6 @@ filter: drop-shadow(-2px 4px 8.2px #000000) drop-shadow(-11px 10px 15px rgba(0, 
     border-radius: 4px; 
     transition: all 0.3s ease-out; 
     transform-style: preserve-3d;
-    opacity: 0;
-    transform: translateY(40px);
-}
-
-.format-item.animate {
-    animation: fadeInMoveUp 0.5s ease-out forwards;
 }
 
 .format-item::after {
@@ -207,7 +190,7 @@ filter: drop-shadow(-2px 4px 8.2px #000000) drop-shadow(-11px 10px 15px rgba(0, 
 }
 
 .format-item:not(:hover)::after {
-    animation: fadeOut 0.75s ease-out forwards;
+    animation: fadeOut 1s ease-out forwards;
 }
 
 .format-item:not(:hover) {
