@@ -2,17 +2,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const grid = document.querySelector('.format-grid');
     const items = grid.querySelectorAll('.format-item');
     let lastHoveredItem = null;
+    let lastHoveredColumn = null;
+    let lastMouseY = null;
 
-    function animateItems() {
-        items.forEach((item, index) => {
-            setTimeout(() => {
-                item.style.opacity = '1';
-                item.style.transform = 'translateY(0)';
-            }, index * 50 + 500);
+    function getColumns(items, grid) {
+        const columns = [];
+        const rect = grid.getBoundingClientRect();
+        const columnCount = Math.floor(rect.width / (180 + 10));
+
+        for (let i = 0; i < columnCount; i++) {
+            columns.push(Array.from(items).filter((_, index) => index % columnCount === i));
+        }
+
+        return columns;
+    }
+
+    function animateColumns() {
+        const columns = getColumns(items, grid);
+        columns.forEach((column, columnIndex) => {
+            column.forEach((item, itemIndex) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    item.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                    
+                    // Remove transition after animation
+                    setTimeout(() => {
+                        item.style.transition = '';
+                    }, 500);
+                }, columnIndex * 300 + itemIndex * 100);
+            });
         });
     }
 
-    animateItems();
+    animateColumns();
 
     function getNeighbors(index, columns) {
         const neighbors = [];
@@ -43,16 +69,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const rect = grid.getBoundingClientRect();
         const columns = Math.floor(rect.width / (180 + 10));
         const index = Array.from(items).indexOf(target);
-    
-        if (lastHoveredItem === target) return;
-        lastHoveredItem = target;
+        const currentColumn = index % columns;
     
         const neighbors = getNeighbors(index, columns);
     
         const mouseX = event.clientX - rect.left;
+        const mouseY = event.clientY - rect.top;
         const itemWidth = rect.width / columns;
-        const itemCenterX = (index % columns) * itemWidth + itemWidth / 2;
+        const itemCenterX = currentColumn * itemWidth + itemWidth / 2;
         const mouseDirection = mouseX < itemCenterX ? 'left' : 'right';
+    
+        // Check if we've moved to a new column
+        const columnChanged = lastHoveredColumn !== currentColumn;
+        lastHoveredColumn = currentColumn;
+
+        // Determine vertical movement
+        const verticalMovement = lastMouseY !== null ? mouseY - lastMouseY : 0;
+        const movingVertically = Math.abs(verticalMovement) > 0; // Threshold for vertical movement
     
         items.forEach(item => {
             if (!neighbors.some(n => n.item === item)) {
@@ -61,66 +94,59 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             item.style.zIndex = '1';
         });
-    
-        const isMiddleRow = neighbors.length === 3;
-    
         neighbors.forEach(({ item, rowDiff, colDiff }) => {
             let scale, translateY, rotateY;
-    
             if (rowDiff === 0 && colDiff === 0) {
                 scale = 1.4;
                 translateY = -0.01;
-                if (!item.classList.contains('flipped')) {
+                if (columnChanged) {
                     rotateY = mouseDirection === 'left' ? -180 : 180;
-                    item.classList.add('flipped');
+                    item.classList.toggle('flipped');
                 } else {
-                    rotateY = 0;
-                    item.classList.remove('flipped');
+                    rotateY = item.classList.contains('flipped') ? 180 : 0;
                 }
             } else {
-                scale = 1.2;
-                translateY = -0.01;
-                rotateY = getRotation(item);
+                if (movingVertically) {
+                    scale = 1.2
+                    translateY =-0.01
+                } else {
+                    scale = 1
+                    translateY = 0
+                }
+                rotateY = item.classList.contains('flipped') ? 180 : 0;
             }
 
-            const currentTransform = window.getComputedStyle(item).transform;
-            const matrix = new DOMMatrix(currentTransform);
-            const currentScale = matrix.m11;
-
-            if (Math.abs(currentScale - 1) < 0.01 && (rowDiff === 0 && colDiff === 0)) {
-                item.style.transform = `translateY(${translateY}px) scale(${scale}) rotateY(${rotateY}deg)`;
-            } else {
-                item.style.transform = `translateY(${translateY}px) scale(${scale})`;
-            }
-
+            item.style.transform = `translateY(${translateY}px) scale(${scale}) rotateY(${rotateY}deg)`;
             item.style.zIndex = rowDiff === 0 && colDiff === 0 ? '3' : '2';
 
             updateItemContent(item, rotateY);
         });
+    
+        lastHoveredItem = target;
+        lastMouseY = mouseY;
     }
 
     function resetHillEffect() {
         items.forEach(item => {
-            const currentRotation = getRotation(item);
+            const currentRotation = item.classList.contains('flipped') ? 180 : 0;
             item.style.transform = `translateY(0) scale(1) rotateY(${currentRotation}deg)`;
             item.style.zIndex = '1';
             
             updateItemContent(item, currentRotation);
         });
         lastHoveredItem = null;
+        lastHoveredColumn = null;
     }
 
     function getRotation(item) {
-        const transform = item.style.transform;
-        const match = transform.match(/rotateY\(([-\d.]+)deg\)/);
-        return match ? parseFloat(match[1]) : 0;
+        return item.classList.contains('flipped') ? 180 : 0;
     }
 
     function updateItemContent(item, rotateY) {
         const originalContent = item.querySelector('.format-text');
         const flippedContent = item.querySelector('.flipped-content') || createFlippedContent(item);
 
-        originalContent.style.opacity = Math.abs(rotateY) === 180 ? '1' : '1';
+        originalContent.style.opacity = Math.abs(rotateY) === 180 ? '0' : '1';
         flippedContent.style.opacity = Math.abs(rotateY) === 180 ? '1' : '0';
     }
 
