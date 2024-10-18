@@ -19,26 +19,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function animateColumns() {
         const columns = getColumns(items, grid);
-        columns.forEach((column, columnIndex) => {
-            column.forEach((item, itemIndex) => {
-                item.style.opacity = '0';
-                item.style.transform = 'translateY(20px)';
-                
-                setTimeout(() => {
-                    item.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
-                    item.style.opacity = '1';
-                    item.style.transform = 'translateY(0)';
-                    
-                    // Remove transition after animation
-                    setTimeout(() => {
-                        item.style.transition = '';
-                    }, 500);
-                }, columnIndex * 300 + itemIndex * 100);
-            });
-        });
-    }
+        const maxColumnHeight = Math.max(...columns.map(col => col.length));
 
-    animateColumns();
+        for (let rowIndex = 0; rowIndex < maxColumnHeight; rowIndex++) {
+            columns.forEach(column => {
+                const item = column[rowIndex];
+                if (item) {
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateY(20px)';
+                    
+                    setTimeout(() => {
+                        item.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                        
+                        // Remove transition after animation
+                        setTimeout(() => {
+                            item.style.transition = '';
+                        }, 500);
+                    }, rowIndex * 300);
+                }
+            });
+        }
+    }
 
     function getNeighbors(index, columns) {
         const neighbors = [];
@@ -94,11 +97,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             item.style.zIndex = '1';
         });
+
         neighbors.forEach(({ item, rowDiff, colDiff }) => {
             let scale, translateY, rotateY;
             if (rowDiff === 0 && colDiff === 0) {
                 scale = 1.4;
-                translateY = -0.01;
+                translateY = 0;
                 if (columnChanged) {
                     rotateY = mouseDirection === 'left' ? -180 : 180;
                     item.classList.toggle('flipped');
@@ -107,11 +111,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } else {
                 if (movingVertically) {
-                    scale = 1.2
-                    translateY =-0.01
+                    scale = 1.2;
+                    translateY = 0;
                 } else {
-                    scale = 1
-                    translateY = 0
+                    scale = 1;
+                    translateY = 0;
                 }
                 rotateY = item.classList.contains('flipped') ? 180 : 0;
             }
@@ -144,19 +148,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateItemContent(item, rotateY) {
         const originalContent = item.querySelector('.format-text');
-        const flippedContent = item.querySelector('.flipped-content') || createFlippedContent(item);
+        const flippedContent = item.querySelector('.flipped-content');
 
         originalContent.style.opacity = Math.abs(rotateY) === 180 ? '0' : '1';
         flippedContent.style.opacity = Math.abs(rotateY) === 180 ? '1' : '0';
     }
 
-    function createFlippedContent(item) {
-        const flippedContent = document.createElement('div');
-        flippedContent.className = 'flipped-content';
-        flippedContent.innerHTML = item.querySelector('.format-text').innerHTML;
-        item.appendChild(flippedContent);
-        return flippedContent;
+    function initializeGridItems() {
+        items.forEach(item => {
+            if (!item.querySelector('.flipped-content')) {
+                const flippedContent = document.createElement('div');
+                flippedContent.className = 'flipped-content';
+                flippedContent.innerHTML = item.querySelector('.format-text').innerHTML;
+                item.appendChild(flippedContent);
+            }
+        });
     }
+
+    initializeGridItems();
+    animateColumns();
 
     grid.addEventListener('mousemove', applyHillEffect);
     grid.addEventListener('mouseleave', resetHillEffect);

@@ -171,7 +171,7 @@ filter: drop-shadow(-2px 4px 8.2px #000000) drop-shadow(-11px 10px 15px rgba(0, 
     transform-style: preserve-3d;
     opacity: 0;
     backface-visibility: visible;
-    position: relative;
+
 }
 
 .format-item::after {
@@ -194,7 +194,7 @@ filter: drop-shadow(-2px 4px 8.2px #000000) drop-shadow(-11px 10px 15px rgba(0, 
 }
 
 .format-item:hover {
-    transform: scale(1.07);
+    transform: scale(1.1);
 }
 
 .format-item:not(:hover)::after {
@@ -230,6 +230,7 @@ filter: drop-shadow(-2px 4px 8.2px #000000) drop-shadow(-11px 10px 15px rgba(0, 
     font-size: 20px;
     line-height: 19px;
     letter-spacing: 0.02em;
+    
     background: linear-gradient(102.39deg, #727272 2.18%, #B1B1B1 20.2%, #E8E8E8 49.6%, #A4A4A4 74.26%, #424242 97.02%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -241,6 +242,8 @@ filter: drop-shadow(-2px 4px 8.2px #000000) drop-shadow(-11px 10px 15px rgba(0, 
 
 .flipped-content {
     transform: rotateY(180deg);
+   margin: 0px;
+   padding: 0px;
 }
 
 .description-container {
