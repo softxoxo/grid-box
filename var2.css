@@ -164,9 +164,9 @@ filter: drop-shadow(-2px 4px 8.2px #000000) drop-shadow(-11px 10px 15px rgba(0, 
     align-items: center;
     width: 180px;
     height: 54px;
+    border-radius: 4px; 
     background: linear-gradient(90deg, rgba(29, 29, 29, 0.36) 100%, rgba(75, 75, 75, 0.36) 50%, rgba(29, 29, 29, 0.36) 100%); 
     position: relative; 
-    border-radius: 4px; 
     transition: all 0.3s ease-out; 
     transform-style: preserve-3d;
     opacity: 0;
@@ -228,7 +228,6 @@ filter: drop-shadow(-2px 4px 8.2px #000000) drop-shadow(-11px 10px 15px rgba(0, 
     font-style: normal;
     font-weight: 400;
     font-size: 20px;
-    line-height: 19px;
     letter-spacing: 0.02em;
     
     background: linear-gradient(102.39deg, #727272 2.18%, #B1B1B1 20.2%, #E8E8E8 49.6%, #A4A4A4 74.26%, #424242 97.02%);
@@ -242,8 +241,7 @@ filter: drop-shadow(-2px 4px 8.2px #000000) drop-shadow(-11px 10px 15px rgba(0, 
 
 .flipped-content {
     transform: rotateY(180deg);
-   margin: 0px;
-   padding: 0px;
+    line-height: 19px;
 }
 
 .description-container {

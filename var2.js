@@ -31,11 +31,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     setTimeout(() => {
                         item.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
                         item.style.opacity = '1';
-                        item.style.transform = 'translateY(0)';
+                        item.style.transform = `translateY(0) scale(1) rotateY(0deg)`;
                         
                         // Remove transition after animation
                         setTimeout(() => {
                             item.style.transition = '';
+                        
                         }, 500);
                     }, rowIndex * 300);
                 }
@@ -82,13 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const itemCenterX = currentColumn * itemWidth + itemWidth / 2;
         const mouseDirection = mouseX < itemCenterX ? 'left' : 'right';
     
-        // Check if we've moved to a new column
         const columnChanged = lastHoveredColumn !== currentColumn;
         lastHoveredColumn = currentColumn;
 
-        // Determine vertical movement
         const verticalMovement = lastMouseY !== null ? mouseY - lastMouseY : 0;
-        const movingVertically = Math.abs(verticalMovement) > 0; // Threshold for vertical movement
+        const movingVertically = Math.abs(verticalMovement) > 0;
     
         items.forEach(item => {
             if (!neighbors.some(n => n.item === item)) {
@@ -132,11 +131,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function resetHillEffect() {
         items.forEach(item => {
-            const currentRotation = item.classList.contains('flipped') ? 180 : 0;
+            const currentRotation = getRotation(item);
             item.style.transform = `translateY(0) scale(1) rotateY(${currentRotation}deg)`;
             item.style.zIndex = '1';
-            
-            updateItemContent(item, currentRotation);
         });
         lastHoveredItem = null;
         lastHoveredColumn = null;
