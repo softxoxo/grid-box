@@ -20,7 +20,20 @@ document.addEventListener('DOMContentLoaded', () => {
     function animateColumns() {
         const columns = getColumns(items, grid);
         const maxColumnHeight = Math.max(...columns.map(col => col.length));
-
+        
+        // Calculate total animation duration
+        const lastAnimationDelay = (maxColumnHeight - 1) * 300;
+        const animationDuration = 500;
+        const totalDuration = lastAnimationDelay + animationDuration;
+    
+        // Remove shadow initially
+        columns.forEach(column => {
+            column.forEach(item => {
+                item.removeAttribute('data-shadow');
+            });
+        });
+    
+        // Animate each item
         for (let rowIndex = 0; rowIndex < maxColumnHeight; rowIndex++) {
             columns.forEach(column => {
                 const item = column[rowIndex];
@@ -33,15 +46,22 @@ document.addEventListener('DOMContentLoaded', () => {
                         item.style.opacity = '1';
                         item.style.transform = `translateY(0) scale(1) rotateY(0deg)`;
                         
-                        // Remove transition after animation
                         setTimeout(() => {
                             item.style.transition = '';
-                        
                         }, 500);
                     }, rowIndex * 300);
                 }
             });
         }
+    
+        // Show shadow after all animations complete
+        setTimeout(() => {
+            columns.forEach(column => {
+                column.forEach(item => {
+                    item.setAttribute('data-shadow', 'true');
+                });
+            });
+        }, totalDuration);
     }
 
     function getNeighbors(index, columns) {
