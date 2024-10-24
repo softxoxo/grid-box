@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastHoveredItem = null;
     let lastHoveredColumn = null;
     let lastMouseY = null;
+    let isHillEffectMode = false; 
 
     function getColumns(items, grid) {
         const columns = [];
@@ -86,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return neighbors;
     }
 
+    
     function applyHillEffect(event) {
         const target = event.target.closest('.format-item');
         if (!target) return;
@@ -95,8 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const index = Array.from(items).indexOf(target);
         const currentColumn = index % columns;
     
-        const neighbors = getNeighbors(index, columns);
-    
         const mouseX = event.clientX - rect.left;
         const mouseY = event.clientY - rect.top;
         const itemWidth = rect.width / columns;
@@ -104,11 +104,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const mouseDirection = mouseX < itemCenterX ? 'left' : 'right';
     
         const columnChanged = lastHoveredColumn !== currentColumn;
-        lastHoveredColumn = currentColumn;
+        const neighbors = getNeighbors(index, columns);
 
-        const verticalMovement = lastMouseY !== null ? mouseY - lastMouseY : 0;
-        const movingVertically = Math.abs(verticalMovement) > 0;
-    
+        // Reset transforms for non-neighbor items
         items.forEach(item => {
             if (!neighbors.some(n => n.item === item)) {
                 const currentRotation = getRotation(item);
@@ -117,11 +115,31 @@ document.addEventListener('DOMContentLoaded', () => {
             item.style.zIndex = '1';
         });
 
+        // Handle column change
+        if (columnChanged) {
+            isHillEffectMode = false;  // Reset to Phase 1
+            items.forEach(item => item.removeAttribute('data-neighbor'));
+            // Mark new neighbors
+            neighbors.forEach(({ item }) => {
+                if (item !== target) {
+                    item.setAttribute('data-neighbor', 'true');
+                }
+            });
+        }
+
+        // Check if we should switch to Phase 2
+        if (!isHillEffectMode && target.hasAttribute('data-neighbor')) {
+            isHillEffectMode = true;  // Switch to Phase 2
+            // Remove all neighbor attributes as we don't need them anymore
+            items.forEach(item => item.removeAttribute('data-neighbor'));
+        }
+
         neighbors.forEach(({ item, rowDiff, colDiff }) => {
-            let scale, translateY, rotateY;
+            let scale, rotateY;
+            
             if (rowDiff === 0 && colDiff === 0) {
+                // Main hovered item
                 scale = 1.4;
-                translateY = 0;
                 if (columnChanged) {
                     rotateY = mouseDirection === 'left' ? -180 : 180;
                     item.classList.toggle('flipped');
@@ -129,23 +147,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     rotateY = item.classList.contains('flipped') ? 180 : 0;
                 }
             } else {
-                if (movingVertically) {
-                    scale = 1.2;
-                    translateY = 0;
-                } else {
-                    scale = 1;
-                    translateY = 0;
-                }
+                // Neighbor items
+                scale = isHillEffectMode ? 1.2 : 1;  // Only apply hill effect in Phase 2
                 rotateY = item.classList.contains('flipped') ? 180 : 0;
             }
 
-            item.style.transform = `translateY(${translateY}px) scale(${scale}) rotateY(${rotateY}deg)`;
+            item.style.transform = `translateY(0) scale(${scale}) rotateY(${rotateY}deg)`;
             item.style.zIndex = rowDiff === 0 && colDiff === 0 ? '3' : '2';
-
+            
             updateItemContent(item, rotateY);
         });
     
         lastHoveredItem = target;
+        lastHoveredColumn = currentColumn;
         lastMouseY = mouseY;
     }
 
@@ -154,9 +168,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentRotation = getRotation(item);
             item.style.transform = `translateY(0) scale(1) rotateY(${currentRotation}deg)`;
             item.style.zIndex = '1';
+            item.removeAttribute('data-neighbor');
         });
         lastHoveredItem = null;
         lastHoveredColumn = null;
+        isHillEffectMode = false;  // Reset to Phase 1
     }
 
     function getRotation(item) {
