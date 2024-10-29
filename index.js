@@ -58,7 +58,7 @@ function setupClickEffects(items) {
                 if (item.matches(':hover')) {
                     item.classList.add('hover-active');
                 }
-            }, 300); // This should match the CSS transition duration
+            }, 120); // This should match the CSS transition duration
         });
 
         // Add hover class when mouse enters
