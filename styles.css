@@ -188,11 +188,11 @@ filter: drop-shadow(-2px 4px 8.2px #000000) drop-shadow(-11px 10px 15px rgba(0, 
 
 .format-item:hover::after {
     opacity: 1;
-    animation: fadeIn 0.3s ease-out forwards, hoverFadeOut 2s 2s forwards;
+    animation: fadeIn 0.3s ease-out forwards;
 }
 
 .format-item:not(:hover)::after {
-    animation: fadeOut 1s ease-out forwards;
+    animation: fadeOut 0.75s ease-out forwards;
 }
 
 .format-item.clicked {
