@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         item.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
                         item.style.opacity = '1';
                         item.style.transform = `translateY(0) scale(1) rotateY(0deg)`;
-                        
+                        item.setAttribute('data-shadow', 'true');
                         setTimeout(() => {
                             item.style.transition = '';
                         }, 500);
@@ -54,15 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
-    
-        // Show shadow after all animations complete
-        setTimeout(() => {
-            columns.forEach(column => {
-                column.forEach(item => {
-                    item.setAttribute('data-shadow', 'true');
-                });
-            });
-        }, totalDuration);
     }
 
     function getNeighbors(index, columns) {
